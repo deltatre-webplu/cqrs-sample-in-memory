@@ -15,7 +15,7 @@ namespace CqrsSample.Inventory.CommandStack.Model
     /// <summary>
     /// Gets the aggregate unique identifier
     /// </summary>
-    public abstract Guid Id { get; }
+    public Guid Id { get; protected set; }
 
     /// <summary>
     /// Gets or sets the aggregate version

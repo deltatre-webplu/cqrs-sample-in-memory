@@ -5,7 +5,7 @@ namespace CqrsSample.Inventory.CommandStack.Events
   /// <summary>
   /// The domain event raised when an inventory item is created
   /// </summary>
-  public class InventoryItemCreated : Event
+  public sealed class InventoryItemCreated : Event
   {
     public InventoryItemCreated(
       Guid id,
