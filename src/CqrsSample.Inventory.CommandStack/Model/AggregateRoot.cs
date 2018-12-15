@@ -8,36 +8,36 @@ namespace CqrsSample.Inventory.CommandStack.Model
   /// <summary>
   /// An abstraction for aggregate roots
   /// </summary>
-  internal abstract class AggregateRoot
+  public abstract class AggregateRoot
   {
     private readonly List<Event> uncommitedChanges = new List<Event>();
 
     /// <summary>
     /// Gets the aggregate unique identifier
     /// </summary>
-    internal abstract Guid Id { get; }
+    public abstract Guid Id { get; }
 
     /// <summary>
     /// Gets or sets the aggregate version
     /// </summary>
-    internal int Version { get; private set; }
+    public int Version { get; private set; }
 
     /// <summary>
     /// Gets the uncommited aggregate changes
     /// </summary>
     /// <returns>A sequence containing all the uncommited aggregate changes</returns>
-    internal IEnumerable<Event> GetUncommittedChanges() => this.uncommitedChanges;
+    public IEnumerable<Event> GetUncommittedChanges() => this.uncommitedChanges;
 
     /// <summary>
     /// Marks all uncommited aggregate changes as committed
     /// </summary>
-    internal void MarkChangesAsCommitted() => this.uncommitedChanges.Clear();
+    public void MarkChangesAsCommitted() => this.uncommitedChanges.Clear();
 
     /// <summary>
     /// Rehydrate the aggregate from a stream of domain events
     /// </summary>
     /// <param name="history">The aggregate history as a stream of domain events</param>
-    internal void LoadsFromHistory(IEnumerable<Event> history)
+    public void LoadsFromHistory(IEnumerable<Event> history)
     {
       if (history == null)
         throw new ArgumentNullException(nameof(history));
