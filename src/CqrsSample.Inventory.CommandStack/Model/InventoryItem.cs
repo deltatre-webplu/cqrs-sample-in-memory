@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CqrsSample.Inventory.CommandStack.Events;
+using System;
 
 namespace CqrsSample.Inventory.CommandStack.Model
 {
@@ -12,6 +13,12 @@ namespace CqrsSample.Inventory.CommandStack.Model
     /// </summary>
     public string Name { get; private set; }
 
+    private void Apply(InventoryItemCreated @event)
+    {
+      this.Id = @event.Id;
+      this.Name = @event.Name;
+    }
+
     public static class Factory
     {
       /// <summary>
@@ -23,7 +30,29 @@ namespace CqrsSample.Inventory.CommandStack.Model
       /// <exception cref="ArgumentException">Throws <see cref="ArgumentException"/> when <paramref name="id"/> equals <see cref="Guid.Empty"/> or <paramref name="name"/> is null or white space</exception>
       public static InventoryItem CreateNew(Guid id, string name)
       {
-        throw new NotImplementedException();
+        if (id == Guid.Empty)
+        {
+          throw new ArgumentException(
+            $"Parameter '{nameof(id)}' cannot be the empty guid",
+            nameof(id));
+        }
+
+        if (string.IsNullOrWhiteSpace(name))
+        {
+          throw new ArgumentException(
+            $"Parameter '{nameof(name)}' cannot be a string null or white space",
+            nameof(name));
+        }
+
+        var inventoryItem = new InventoryItem();
+
+        var @event = new InventoryItemCreated(
+          id,
+          name,
+          AggregateRoot.StartingVersion);
+        inventoryItem.RaiseEvent(@event);
+
+        return inventoryItem;
       }
     }
   }
