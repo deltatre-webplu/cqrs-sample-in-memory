@@ -64,5 +64,20 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Model
       Assert.AreEqual(id, @event.Id);
       Assert.AreEqual(name, @event.Name);
     }
+
+    [Test]
+    public void CreateNew_Creates_An_Aggregate_Having_Version_Equal_To_One()
+    {
+      // ARRANGE
+      var id = Guid.NewGuid();
+      const string name = "tennis shoes";
+
+      // ACT
+      var result = InventoryItem.Factory.CreateNew(id, name);
+
+      // ASSERT
+      Assert.IsNotNull(result);
+      Assert.AreEqual(1, result.Version);
+    }
   }
 }
