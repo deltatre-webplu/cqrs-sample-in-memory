@@ -7,9 +7,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3F468105-666
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{CC17434A-D6AA-43CD-A4F5-7F20974E28C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CqrsSample.Inventory.CommandStack", "src\CqrsSample.Inventory.CommandStack\CqrsSample.Inventory.CommandStack.csproj", "{23164F9A-912B-410D-80C6-244D4874777F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CqrsSample.Inventory.CommandStack", "src\CqrsSample.Inventory.CommandStack\CqrsSample.Inventory.CommandStack.csproj", "{23164F9A-912B-410D-80C6-244D4874777F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CqrsSample.Inventory.CommandStack.Tests", "test\CqrsSample.Inventory.CommandStack.Tests\CqrsSample.Inventory.CommandStack.Tests.csproj", "{3F1885E7-2A12-4D6D-8F2E-F6C2BF40ABC9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CqrsSample.Inventory.CommandStack.Tests", "test\CqrsSample.Inventory.CommandStack.Tests\CqrsSample.Inventory.CommandStack.Tests.csproj", "{899914C6-0CC3-429F-B248-89959B57BECC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,17 +21,17 @@ Global
 		{23164F9A-912B-410D-80C6-244D4874777F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23164F9A-912B-410D-80C6-244D4874777F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23164F9A-912B-410D-80C6-244D4874777F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3F1885E7-2A12-4D6D-8F2E-F6C2BF40ABC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3F1885E7-2A12-4D6D-8F2E-F6C2BF40ABC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3F1885E7-2A12-4D6D-8F2E-F6C2BF40ABC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3F1885E7-2A12-4D6D-8F2E-F6C2BF40ABC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{899914C6-0CC3-429F-B248-89959B57BECC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{899914C6-0CC3-429F-B248-89959B57BECC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{899914C6-0CC3-429F-B248-89959B57BECC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{899914C6-0CC3-429F-B248-89959B57BECC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{23164F9A-912B-410D-80C6-244D4874777F} = {3F468105-6665-4004-81F5-C416C8C3D5AD}
-		{3F1885E7-2A12-4D6D-8F2E-F6C2BF40ABC9} = {CC17434A-D6AA-43CD-A4F5-7F20974E28C6}
+		{899914C6-0CC3-429F-B248-89959B57BECC} = {CC17434A-D6AA-43CD-A4F5-7F20974E28C6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {87FF9288-7193-4F67-9D09-D4059FC63FE7}
