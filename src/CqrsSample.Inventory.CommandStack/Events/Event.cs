@@ -5,7 +5,7 @@
   /// </summary>
   public abstract class Event
   {
-    public Event(int aggregateVersion)
+    protected Event(int aggregateVersion)
     {
       this.AggregateVersion = aggregateVersion;
     }

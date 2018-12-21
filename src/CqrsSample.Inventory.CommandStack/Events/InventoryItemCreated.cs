@@ -7,6 +7,12 @@ namespace CqrsSample.Inventory.CommandStack.Events
   /// </summary>
   public sealed class InventoryItemCreated : Event
   {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="InventoryItemCreated"/> class.
+    /// </summary>
+    /// <param name="id">The unique identifier for the inventory item</param>
+    /// <param name="name">The name of the inventory item</param>
+    /// <param name="aggregateVersion">The aggregate version at the moment when the event was raised</param>
     public InventoryItemCreated(
       Guid id,
       string name,

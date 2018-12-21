@@ -7,6 +7,14 @@ namespace CqrsSample.Inventory.CommandStack.Events
   /// </summary>
   public sealed class InventoryItemRenamed : Event
   {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="InventoryItemRenamed"/> class.
+    /// </summary>
+    /// <param name="aggregateVersion">The aggregate version at the moment when the event was raised</param>
+    /// <param name="id">The unique identifier for the inventory item</param>
+    /// <param name="newName">The new name of the inventory item</param>
+    /// <param name="oldName">The old name of the inventory item</param>
+
     public InventoryItemRenamed(
       int aggregateVersion,
       Guid id,
