@@ -8,15 +8,48 @@ namespace CqrsSample.Inventory.CommandStack.Model
   /// </summary>
   public sealed class InventoryItem : AggregateRoot
   {
+    private InventoryItem()
+    {
+
+    }
+
     /// <summary>
     /// Gets the name of the inventory item
     /// </summary>
     public string Name { get; private set; }
 
+    /// <summary>
+    /// Change the new of the inventory item
+    /// </summary>
+    /// <param name="newName">The new name to be assigned to the inventory item</param>
+    /// <exception cref="ArgumentException">Throws <see cref="ArgumentException"/> when <paramref name="newName"/> is null or white space</exception>
+    public void ChangeName(string newName)
+    {
+      if (string.IsNullOrWhiteSpace(newName))
+      {
+        throw new ArgumentException(
+          $"Parameter '{nameof(newName)}' cannot be a string null or white space",
+          nameof(newName));
+      }
+
+      if (this.Name == newName)
+      {
+        return;
+      }
+
+      var @event = new InventoryItemRenamed(this.Version, this.Id, newName, this.Name);
+      this.RaiseEvent(@event);
+    }
+
     private void Apply(InventoryItemCreated @event)
     {
       this.Id = @event.Id;
       this.Name = @event.Name;
+    }
+
+    private void Apply(InventoryItemRenamed @event)
+    {
+      this.Name = @event.NewName;
     }
 
     public static class Factory
