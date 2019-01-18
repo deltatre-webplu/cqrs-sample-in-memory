@@ -14,14 +14,19 @@ namespace CqrsSample.Inventory.CommandStack.Model
     }
 
     /// <summary>
-    /// Gets the name of the inventory item
+    /// Gets or sets the name of the inventory item
     /// </summary>
     public string Name { get; private set; }
 
     /// <summary>
-    /// Gets a flag indicating whether the inventory item is active. Deactivated inventory item are not available for usage.
+    /// Gets or sets a flag indicating whether the inventory item is active. Deactivated inventory item are not available for usage.
     /// </summary>
     public bool IsActive { get; private set; }
+
+    /// <summary>
+    /// Gets or sets the number of items in the inventory
+    /// </summary>
+    public int Count { get; private set; }
 
     /// <summary>
     /// Change the new of the inventory item
@@ -58,6 +63,15 @@ namespace CqrsSample.Inventory.CommandStack.Model
 
       var @event = new InventoryItemDeactivated(this.Version, this.Id);
       this.RaiseEvent(@event);
+    }
+
+    /// <summary>
+    /// Adds items to the inventory
+    /// </summary>
+    /// <param name="numberOfItemsToBeAdded">The number of items to be added</param>
+    public void Add(int numberOfItemsToBeAdded)
+    {
+      throw new NotImplementedException();
     }
 
     private void Apply(InventoryItemCreated @event)
