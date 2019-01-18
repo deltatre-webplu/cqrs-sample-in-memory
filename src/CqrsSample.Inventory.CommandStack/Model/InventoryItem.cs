@@ -58,6 +58,7 @@ namespace CqrsSample.Inventory.CommandStack.Model
     {
       this.Id = @event.Id;
       this.Name = @event.Name;
+      this.IsActive = true;
     }
 
     private void Apply(InventoryItemRenamed @event)
