@@ -56,7 +56,7 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Model
       var result = InventoryItem.Factory.CreateNew(id, name);
 
       // ASSERT
-      var events = result.GetUncommittedChanges().ToArray();
+      var events = ((IAggregateRoot)result).GetUncommittedChanges().ToArray();
       Assert.AreEqual(1, events.Length);
 
       var @event = events[0] as InventoryItemCreated;

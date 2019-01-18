@@ -16,7 +16,7 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Model
     {
       // ARRANGE
       var target = InventoryItem.Factory.CreateNew(Guid.NewGuid(), "test");
-      
+
       // ACT
       Assert.Throws<ArgumentException>(() => target.ChangeName(newName));
     }
@@ -27,13 +27,13 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Model
       // ARRANGE
       var id = Guid.NewGuid();
       var target = InventoryItem.Factory.CreateNew(id, "Old name");
-      target.MarkChangesAsCommitted();
+      ((IAggregateRoot) target).MarkChangesAsCommitted();
 
       // ACT
       target.ChangeName("New name");
 
       // ASSERT
-      var uncommittedChanges = target.GetUncommittedChanges().ToArray();
+      var uncommittedChanges = ((IAggregateRoot)target).GetUncommittedChanges().ToArray();
       Assert.AreEqual(1, uncommittedChanges.Length);
 
       var raisedEvent = uncommittedChanges[0] as InventoryItemRenamed;
@@ -49,7 +49,7 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Model
       // ARRANGE
       var id = Guid.NewGuid();
       var target = InventoryItem.Factory.CreateNew(id, "Old name");
-      target.MarkChangesAsCommitted();
+      ((IAggregateRoot)target).MarkChangesAsCommitted();
 
       // ACT
       target.ChangeName("New name");
@@ -64,13 +64,13 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Model
       // ARRANGE
       var id = Guid.NewGuid();
       var target = InventoryItem.Factory.CreateNew(id, "Old name");
-      target.MarkChangesAsCommitted();
+      ((IAggregateRoot)target).MarkChangesAsCommitted();
 
       // ACT
       target.ChangeName("Old name");
 
       // ASSERT
-      var uncommittedChanges = target.GetUncommittedChanges().ToArray();
+      var uncommittedChanges = ((IAggregateRoot)target).GetUncommittedChanges().ToArray();
       Assert.IsEmpty(uncommittedChanges);
     }
 
@@ -80,7 +80,7 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Model
       // ARRANGE
       var id = Guid.NewGuid();
       var target = InventoryItem.Factory.CreateNew(id, "Old name");
-      target.MarkChangesAsCommitted();
+      ((IAggregateRoot)target).MarkChangesAsCommitted();
 
       // ACT
       target.ChangeName("Old name");
