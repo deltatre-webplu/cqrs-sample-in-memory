@@ -19,6 +19,11 @@ namespace CqrsSample.Inventory.CommandStack.Model
     public string Name { get; private set; }
 
     /// <summary>
+    /// Gets a flag indicating whether the inventory item is active. Deactivated inventory item are not available for usage.
+    /// </summary>
+    public bool IsActive { get; private set; }
+
+    /// <summary>
     /// Change the new of the inventory item
     /// </summary>
     /// <param name="newName">The new name to be assigned to the inventory item</param>
@@ -39,6 +44,14 @@ namespace CqrsSample.Inventory.CommandStack.Model
 
       var @event = new InventoryItemRenamed(this.Version, this.Id, newName, this.Name);
       this.RaiseEvent(@event);
+    }
+
+    /// <summary>
+    /// Deactivates the inventory item so that it is not available anymore
+    /// </summary>
+    public void Deactivate()
+    {
+      throw new NotImplementedException();
     }
 
     private void Apply(InventoryItemCreated @event)
