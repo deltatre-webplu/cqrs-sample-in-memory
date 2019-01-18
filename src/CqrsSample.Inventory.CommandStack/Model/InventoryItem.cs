@@ -51,7 +51,13 @@ namespace CqrsSample.Inventory.CommandStack.Model
     /// </summary>
     public void Deactivate()
     {
-      throw new NotImplementedException();
+      if (!this.IsActive)
+      {
+        return;
+      }
+
+      var @event = new InventoryItemDeactivated(this.Version, this.Id);
+      this.RaiseEvent(@event);
     }
 
     private void Apply(InventoryItemCreated @event)
@@ -64,6 +70,11 @@ namespace CqrsSample.Inventory.CommandStack.Model
     private void Apply(InventoryItemRenamed @event)
     {
       this.Name = @event.NewName;
+    }
+
+    private void Apply(InventoryItemDeactivated @event)
+    {
+      this.IsActive = false;
     }
 
     public static class Factory
