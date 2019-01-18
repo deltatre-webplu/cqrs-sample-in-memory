@@ -43,6 +43,7 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Model
       Assert.IsNotNull(result);
       Assert.AreEqual(id, result.Id);
       Assert.AreEqual(name, result.Name);
+      Assert.IsTrue(result.IsActive);
     }
 
     [Test]
