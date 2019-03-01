@@ -83,6 +83,31 @@ namespace CqrsSample.Inventory.CommandStack.Model
       this.RaiseEvent(@event);
     }
 
+    /// <summary>
+    /// Removes items from the inventory
+    /// </summary>
+    /// <param name="numberOfItemsToBeRemoved">The number of items to be removed</param>
+    /// <exception cref="ArgumentOutOfRangeException">Throws <see cref="ArgumentOutOfRangeException"/> when parameter <paramref name="numberOfItemsToBeRemoved"/> is less than or equal to zero</exception>
+    /// <exception cref="InvalidOperationException">Throws <see cref="InvalidOperationException"/> when parameter <paramref name="numberOfItemsToBeRemoved"/> is greater than the number of items currently inside the inventory</exception>
+    public void Remove(int numberOfItemsToBeRemoved)
+    {
+      if (numberOfItemsToBeRemoved <= 0)
+      {
+        throw new ArgumentOutOfRangeException(
+          nameof(numberOfItemsToBeRemoved),
+          $"Parameter '{nameof(numberOfItemsToBeRemoved)}' must be a positive integer");
+      }
+
+      if (numberOfItemsToBeRemoved > this.Count)
+      {
+        throw new InvalidOperationException(
+          $"Cannot remove {numberOfItemsToBeRemoved} items from an inventory having {this.Count} items. Number of items to be removed must be less than or equal to inventory count.");
+      }
+
+      var @event = new ItemsRemovedFromInventory(this.Version, this.Id, numberOfItemsToBeRemoved);
+      this.RaiseEvent(@event);
+    }
+
     private void Apply(InventoryItemCreated @event)
     {
       this.Id = @event.Id;
@@ -103,6 +128,11 @@ namespace CqrsSample.Inventory.CommandStack.Model
     private void Apply(ItemsAddedToInventory @event)
     {
       this.Count += @event.NumberOfAddedItems;
+    }
+
+    private void Apply(ItemsRemovedFromInventory @event)
+    {
+      this.Count -= @event.NumberOfRemovedItems;
     }
 
     public static class Factory
