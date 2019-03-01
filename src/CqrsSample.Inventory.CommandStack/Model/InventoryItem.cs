@@ -69,9 +69,18 @@ namespace CqrsSample.Inventory.CommandStack.Model
     /// Adds items to the inventory
     /// </summary>
     /// <param name="numberOfItemsToBeAdded">The number of items to be added</param>
+    /// <exception cref="ArgumentOutOfRangeException">Throws <see cref="ArgumentOutOfRangeException"/> when parameter <paramref name="numberOfItemsToBeAdded"/> is less than or equal to zero</exception>
     public void Add(int numberOfItemsToBeAdded)
     {
-      throw new NotImplementedException();
+      if (numberOfItemsToBeAdded <= 0)
+      {
+        throw new ArgumentOutOfRangeException(
+          nameof(numberOfItemsToBeAdded),
+          $"Parameter '{nameof(numberOfItemsToBeAdded)}' must be a positive integer");
+      }
+
+      var @event = new ItemsAddedToInventory(this.Version, this.Id, numberOfItemsToBeAdded);
+      this.RaiseEvent(@event);
     }
 
     private void Apply(InventoryItemCreated @event)
@@ -89,6 +98,11 @@ namespace CqrsSample.Inventory.CommandStack.Model
     private void Apply(InventoryItemDeactivated @event)
     {
       this.IsActive = false;
+    }
+
+    private void Apply(ItemsAddedToInventory @event)
+    {
+      this.Count += @event.NumberOfAddedItems;
     }
 
     public static class Factory

@@ -44,6 +44,7 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Model
       Assert.AreEqual(id, result.Id);
       Assert.AreEqual(name, result.Name);
       Assert.IsTrue(result.IsActive);
+      Assert.AreEqual(0, result.Count);
     }
 
     [Test]
