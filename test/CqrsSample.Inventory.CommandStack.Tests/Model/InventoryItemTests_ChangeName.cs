@@ -41,6 +41,7 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Model
       Assert.AreEqual(id, raisedEvent.Id);
       Assert.AreEqual("Old name", raisedEvent.OldName);
       Assert.AreEqual("New name", raisedEvent.NewName);
+      Assert.AreEqual(2, raisedEvent.AggregateVersion);
     }
 
     [Test]
@@ -56,6 +57,7 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Model
 
       // ASSERT
       Assert.AreEqual("New name", target.Name);
+      Assert.AreEqual(2, target.Version);
     }
 
     [Test]
@@ -87,6 +89,7 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Model
 
       // ASSERT
       Assert.AreEqual("Old name", target.Name);
+      Assert.AreEqual(1, target.Version);
     }
   }
 }
