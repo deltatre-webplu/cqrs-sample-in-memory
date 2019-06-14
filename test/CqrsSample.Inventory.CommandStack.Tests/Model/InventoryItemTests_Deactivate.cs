@@ -28,6 +28,7 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Model
       var @event = events[0] as InventoryItemDeactivated;
       Assert.IsNotNull(@event);
       Assert.AreEqual(id, @event.Id);
+      Assert.AreEqual(2, @event.AggregateVersion);
     }
 
     [Test]
@@ -42,6 +43,7 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Model
 
       // ASSERT
       Assert.IsFalse(target.IsActive);
+      Assert.AreEqual(2, target.Version);
     }
 
     [Test]
@@ -78,6 +80,7 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Model
 
       // ASSERT
       Assert.IsFalse(target.IsActive);
+      Assert.AreEqual(2, target.Version);
     }
   }
 }
