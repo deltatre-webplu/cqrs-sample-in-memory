@@ -48,13 +48,13 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Model
       Assert.IsNotNull(raisedEvent);
       Assert.AreEqual(id, raisedEvent.Id);
       Assert.AreEqual(3, raisedEvent.NumberOfAddedItems);
+      Assert.AreEqual(2, raisedEvent.AggregateVersion);
     }
 
     [Test]
     public void Add_Changes_Aggregate_State_When_Items_Are_Added_For_The_First_Time()
     {
       // ARRANGE
-      var id = Guid.NewGuid();
       var target = InventoryItem.Factory.CreateNew(Guid.NewGuid(), "test");
       ((IAggregateRoot)target).MarkChangesAsCommitted();
 
@@ -63,6 +63,7 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Model
 
       // ASSERT
       Assert.AreEqual(3, target.Count);
+      Assert.AreEqual(2, target.Version);
     }
 
     [Test]
@@ -87,6 +88,7 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Model
       Assert.IsNotNull(raisedEvent);
       Assert.AreEqual(id, raisedEvent.Id);
       Assert.AreEqual(2, raisedEvent.NumberOfAddedItems);
+      Assert.AreEqual(3, raisedEvent.AggregateVersion);
     }
 
     [Test]
@@ -105,6 +107,7 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Model
 
       // ASSERT
       Assert.AreEqual(5, target.Count); // 5 = 3 + 2
+      Assert.AreEqual(3, target.Version);
     }
   }
 }
