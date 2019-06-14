@@ -6,7 +6,7 @@ using ReflectionMagic;
 namespace CqrsSample.Inventory.CommandStack.Model
 {
   /// <summary>
-  /// An abstraction for aggregate roots
+  /// The base class for all the aggregate roots of the domain.
   /// </summary>
   public abstract class AggregateRoot : IAggregateRoot
   {

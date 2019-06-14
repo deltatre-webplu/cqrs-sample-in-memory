@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace CqrsSample.Inventory.CommandStack.Model
 {
   /// <summary>
-  /// Interface modelling the behaviour of an aggregate root
+  /// Interface modelling the behaviour of an aggregate root.
   /// </summary>
   public interface IAggregateRoot
   {
