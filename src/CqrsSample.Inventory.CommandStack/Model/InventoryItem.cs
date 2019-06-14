@@ -1,5 +1,6 @@
 ﻿using CqrsSample.Inventory.CommandStack.Events;
 using System;
+using System.Runtime.CompilerServices;
 
 namespace CqrsSample.Inventory.CommandStack.Model
 {
@@ -47,7 +48,7 @@ namespace CqrsSample.Inventory.CommandStack.Model
         return;
       }
 
-      var @event = new InventoryItemRenamed(this.Version, this.Id, newName, this.Name);
+      var @event = new InventoryItemRenamed(this.Version + 1, this.Id, newName, this.Name);
       this.RaiseEvent(@event);
     }
 
@@ -61,7 +62,7 @@ namespace CqrsSample.Inventory.CommandStack.Model
         return;
       }
 
-      var @event = new InventoryItemDeactivated(this.Version, this.Id);
+      var @event = new InventoryItemDeactivated(this.Version + 1, this.Id);
       this.RaiseEvent(@event);
     }
 
@@ -79,7 +80,7 @@ namespace CqrsSample.Inventory.CommandStack.Model
           $"Parameter '{nameof(numberOfItemsToBeAdded)}' must be a positive integer");
       }
 
-      var @event = new ItemsAddedToInventory(this.Version, this.Id, numberOfItemsToBeAdded);
+      var @event = new ItemsAddedToInventory(this.Version + 1, this.Id, numberOfItemsToBeAdded);
       this.RaiseEvent(@event);
     }
 
@@ -104,7 +105,7 @@ namespace CqrsSample.Inventory.CommandStack.Model
           $"Cannot remove {numberOfItemsToBeRemoved} items from an inventory having {this.Count} items. Number of items to be removed must be less than or equal to inventory count.");
       }
 
-      var @event = new ItemsRemovedFromInventory(this.Version, this.Id, numberOfItemsToBeRemoved);
+      var @event = new ItemsRemovedFromInventory(this.Version + 1, this.Id, numberOfItemsToBeRemoved);
       this.RaiseEvent(@event);
     }
 
@@ -162,10 +163,7 @@ namespace CqrsSample.Inventory.CommandStack.Model
 
         var inventoryItem = new InventoryItem();
 
-        var @event = new InventoryItemCreated(
-          id,
-          name,
-          AggregateRoot.StartingVersion);
+        var @event = new InventoryItemCreated(id, name, 1);
         inventoryItem.RaiseEvent(@event);
 
         return inventoryItem;

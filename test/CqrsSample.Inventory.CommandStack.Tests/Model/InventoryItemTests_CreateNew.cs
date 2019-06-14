@@ -65,6 +65,7 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Model
       Assert.IsNotNull(@event);
       Assert.AreEqual(id, @event.Id);
       Assert.AreEqual(name, @event.Name);
+      Assert.AreEqual(1, @event.AggregateVersion);
     }
 
     [Test]

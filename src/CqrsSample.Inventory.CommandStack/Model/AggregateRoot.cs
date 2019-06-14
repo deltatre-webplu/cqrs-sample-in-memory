@@ -10,8 +10,6 @@ namespace CqrsSample.Inventory.CommandStack.Model
   /// </summary>
   public abstract class AggregateRoot : IAggregateRoot
   {
-    public const int StartingVersion = 0;
-
     private readonly List<Event> uncommitedChanges = new List<Event>();
 
     /// <summary>
@@ -22,7 +20,7 @@ namespace CqrsSample.Inventory.CommandStack.Model
     /// <summary>
     /// Gets or sets the aggregate version
     /// </summary>
-    public int Version { get; private set; } = StartingVersion;
+    public int Version { get; private set; }
 
     /// <summary>
     /// Gets the uncommited aggregate changes
