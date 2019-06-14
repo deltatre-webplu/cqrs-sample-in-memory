@@ -1,6 +1,5 @@
 ﻿using CqrsSample.Inventory.CommandStack.Events;
 using System;
-using System.Runtime.CompilerServices;
 
 namespace CqrsSample.Inventory.CommandStack.Model
 {
