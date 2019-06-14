@@ -11,7 +11,7 @@
     }
 
     /// <summary>
-    /// The aggregate version at the moment when the domain event was raised
+    /// The aggregate version obtained by applying the event to the aggregate. Each event increments the aggregate version by one. 
     /// </summary>
     public int AggregateVersion { get; }
   }
