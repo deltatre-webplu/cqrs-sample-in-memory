@@ -74,6 +74,7 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Model
       Assert.IsNotNull(raisedEvent);
       Assert.AreEqual(id, raisedEvent.Id);
       Assert.AreEqual(3, raisedEvent.NumberOfRemovedItems);
+      Assert.AreEqual(3, raisedEvent.AggregateVersion);
     }
 
     [Test]
@@ -98,6 +99,7 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Model
       Assert.IsNotNull(raisedEvent);
       Assert.AreEqual(id, raisedEvent.Id);
       Assert.AreEqual(2, raisedEvent.NumberOfRemovedItems);
+      Assert.AreEqual(3, raisedEvent.AggregateVersion);
     }
 
     [Test]
@@ -114,6 +116,7 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Model
 
       // ASSERT
       Assert.AreEqual(0, target.Count);
+      Assert.AreEqual(3, target.Version);
     }
 
     [Test]
@@ -130,6 +133,7 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Model
 
       // ASSERT
       Assert.AreEqual(1, target.Count);
+      Assert.AreEqual(3, target.Version);
     }
   }
 }
