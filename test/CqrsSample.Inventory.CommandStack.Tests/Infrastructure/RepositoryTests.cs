@@ -4,14 +4,13 @@ using CqrsSample.Inventory.CommandStack.Model;
 using Moq;
 using NUnit.Framework;
 using System;
-using System.Reflection;
+using System.Linq;
 
 namespace CqrsSample.Inventory.CommandStack.Tests.Infrastructure
 {
   [TestFixture]
   public class RepositoryTest
   {
-
     [Test]
     public void GetById_Is_Able_To_Rehydrate_Aggregate_From_Event_Stream()
     {
@@ -48,17 +47,10 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Infrastructure
       // ARRANGE
       var aggregateId = Guid.NewGuid();
 
-      var events = new Event[]
-      {
-        new PersonCreated("Bob", 26, 1),
-        new NameChanged(2, "Bob", "Alice"),
-        new AgeChanged(3, 26, 22)
-      };
-
       var eventStoreMock = new Mock<IEventStore>(MockBehavior.Strict);
       eventStoreMock
         .Setup(m => m.GetEventsForAggregate(aggregateId))
-        .Returns(events);
+        .Returns(Enumerable.Empty<Event>());
 
       var target = new Repository(eventStoreMock.Object);
 
@@ -67,9 +59,9 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Infrastructure
 
       // ASSERT
       Assert.IsNotNull(result);
-      Assert.AreEqual(3, result.Version);
-      Assert.AreEqual("Alice", result.Name);
-      Assert.AreEqual(22, result.Age);
+      Assert.AreEqual(0, result.Version);
+      Assert.IsNull(result.Name);
+      Assert.AreEqual(0, result.Age);
     }
 
     public class Person : AggregateRoot
