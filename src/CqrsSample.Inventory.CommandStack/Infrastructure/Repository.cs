@@ -6,7 +6,7 @@ namespace CqrsSample.Inventory.CommandStack.Infrastructure
   /// <summary>
   /// An implementation of the interface <see cref="IRepository"/> which uses the <see cref="IEventStore"/> abstraction in order to access the event store.
   /// </summary>
-  public class Repository : IRepository
+  public sealed class Repository : IRepository
   {
     private readonly IEventStore eventStore;
 

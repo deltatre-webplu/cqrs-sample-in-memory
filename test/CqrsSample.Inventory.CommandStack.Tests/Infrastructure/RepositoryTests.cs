@@ -39,6 +39,10 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Infrastructure
       Assert.AreEqual(3, result.Version);
       Assert.AreEqual("Alice", result.Name);
       Assert.AreEqual(22, result.Age);
+
+      // chec mock calls
+      eventStoreMock.Verify(m => m.GetEventsForAggregate(It.IsAny<Guid>()), Times.Once());
+      eventStoreMock.Verify(m => m.GetEventsForAggregate(aggregateId), Times.Once());
     }
 
     [Test]
@@ -62,6 +66,10 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Infrastructure
       Assert.AreEqual(0, result.Version);
       Assert.IsNull(result.Name);
       Assert.AreEqual(0, result.Age);
+
+      // chec mock calls
+      eventStoreMock.Verify(m => m.GetEventsForAggregate(It.IsAny<Guid>()), Times.Once());
+      eventStoreMock.Verify(m => m.GetEventsForAggregate(aggregateId), Times.Once());
     }
 
     public class Person : AggregateRoot
