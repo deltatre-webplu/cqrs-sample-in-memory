@@ -50,7 +50,8 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Infrastructure
     {
       // ARRANGE
       var aggregateId = Guid.NewGuid();
-      var aggregate = Person.Factory.CreateNewInstance(aggregateId, "Bob", 26);
+
+      var aggregate = Person.Factory.CreateNewInstance(aggregateId, "Bob", 26); // newly created aggregate
 
       Expression<Func<IEnumerable<Event>, bool>> predicate =
         events =>
@@ -68,7 +69,7 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Infrastructure
       var target = new Repository(eventStoreMock.Object);
 
       // ACT
-      target.Save(aggregate, 0);
+      target.Save(aggregate, 0); // save the aggregate for the very first time
 
       // ASSERT
       var uncommittedChanges = ((IAggregateRoot)aggregate).GetUncommittedChanges();
@@ -83,6 +84,59 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Infrastructure
       eventStoreMock
         .Verify(
           m => m.SaveEvents(aggregateId, It.Is<IEnumerable<Event>>(predicate), 0),
+          Times.Once
+        );
+    }
+
+    [Test]
+    public void Save_Is_Able_To_Save_Aggregate()
+    {
+      // ARRANGE
+      var aggregateId = Guid.NewGuid();
+
+      var aggregate = Person.Factory.CreateNewInstance(aggregateId, "Bob", 26); // newly created aggregate
+      ((IAggregateRoot)aggregate).MarkChangesAsCommitted(); // simulate the first save of the aggregate after its creation
+      aggregate.ChangeName("Alice");
+      aggregate.ChangeAge(24);
+
+      Expression<Func<IEnumerable<Event>, bool>> predicate =
+        events =>
+          events.Count() == 2
+
+          && (events.ElementAt(0) is NameChanged)
+          && ((NameChanged)events.ElementAt(0)).NewName == "Alice"
+          && ((NameChanged)events.ElementAt(0)).OldName == "Bob"
+          && ((NameChanged)events.ElementAt(0)).Id == aggregateId
+          && events.ElementAt(0).AggregateVersion == 2
+
+          && (events.ElementAt(1) is AgeChanged)
+          && ((AgeChanged)events.ElementAt(1)).NewAge == 24
+          && ((AgeChanged)events.ElementAt(1)).OldAge == 26
+          && ((AgeChanged)events.ElementAt(1)).Id == aggregateId
+          && events.ElementAt(1).AggregateVersion == 3;
+
+      var eventStoreMock = new Mock<IEventStore>(MockBehavior.Strict);
+      eventStoreMock
+        .Setup(m => m.SaveEvents(aggregateId, It.Is<IEnumerable<Event>>(predicate), 1));
+
+      var target = new Repository(eventStoreMock.Object);
+
+      // ACT
+      target.Save(aggregate, 1); // save the aggregate to the event store
+
+      // ASSERT
+      var uncommittedChanges = ((IAggregateRoot)aggregate).GetUncommittedChanges();
+      Assert.IsEmpty(uncommittedChanges);
+
+      eventStoreMock
+        .Verify(
+          m => m.SaveEvents(It.IsAny<Guid>(), It.IsAny<IEnumerable<Event>>(), It.IsAny<int>()),
+          Times.Once
+        );
+
+      eventStoreMock
+        .Verify(
+          m => m.SaveEvents(aggregateId, It.Is<IEnumerable<Event>>(predicate), 1),
           Times.Once
         );
     }
