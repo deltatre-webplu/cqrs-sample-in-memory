@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using CqrsSample.Inventory.CommandStack.Events;
 using ReflectionMagic;
 
@@ -28,8 +27,8 @@ namespace CqrsSample.Inventory.CommandStack.Model
     /// Gets the uncommited aggregate changes
     /// </summary>
     /// <returns>A sequence containing all the uncommited aggregate changes</returns>
-    IEnumerable<Event> IAggregateRoot.GetUncommittedChanges() => this.uncommitedChanges.ToImmutableArray();
-
+    IEnumerable<Event> IAggregateRoot.GetUncommittedChanges() => this.uncommitedChanges.ToImmutableList();
+    
     /// <summary>
     /// Marks all uncommited aggregate changes as committed
     /// </summary>
