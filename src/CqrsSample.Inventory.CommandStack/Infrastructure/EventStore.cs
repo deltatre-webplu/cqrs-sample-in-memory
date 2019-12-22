@@ -19,6 +19,16 @@ namespace CqrsSample.Inventory.CommandStack.Infrastructure
       _store = store ?? throw new ArgumentNullException(nameof(store));
     }
 
+    /// <summary>
+    /// Gets the full event stream for an aggregate. 
+    /// The returned event stream is sorted ascending by aggregate version. 
+    /// </summary>
+    /// <param name="aggregateId">
+    /// The unique identifier of the aggregate for which the event stream is returned.
+    /// </param>
+    /// <returns>
+    /// The full aggregate event stream sorted by aggregate version ascending.
+    /// </returns>
     public ReadOnlyCollection<Event> GetEventsForAggregate(Guid aggregateId)
     {
       using (var stream = _store.OpenStream(aggregateId, minRevision: 0, maxRevision: int.MaxValue))
@@ -32,6 +42,29 @@ namespace CqrsSample.Inventory.CommandStack.Infrastructure
       }
     }
 
+    /// <summary>
+    /// Appends some events to the event stream of a specific aggregate.
+    /// </summary>
+    /// <param name="aggregateId">
+    /// The unique identifier of the aggregate for which the events must be appended to the event stream.
+    /// </param>
+    /// <param name="events">
+    /// The events to be appended to the aggregate's event stream.
+    /// </param>
+    /// <param name="expectedVersion">
+    /// The aggregate version being expected by the method caller.
+    /// This is used in order to perform the optimistic concurrency check before appending the new events 
+    /// to the event stream.
+    /// This parameter is expected to be a non negative integer. 
+    /// Pass the value zero (0) when you are creating a fresh new event stream.
+    /// </param>
+    /// <exception cref="ArgumentNullException">
+    /// Throws <see cref="ArgumentNullException" /> when parameter <paramref name="events" /> is null.
+    /// </exception>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Throws <see cref="ArgumentOutOfRangeException" /> when parameter <paramref name="expectedVersion" /> 
+    /// is less than zero.
+    /// </exception>
     public void SaveEvents(
       Guid aggregateId,
       IEnumerable<Event> events,
@@ -48,8 +81,18 @@ namespace CqrsSample.Inventory.CommandStack.Infrastructure
         );
       }
 
-      bool isNewStream = expectedVersion == 0;
-      if (isNewStream)
+      if (IsNewStream())
+      {
+        CreateNewStream();
+      }
+      else
+      {
+        AppendEventsToExistingStream();
+      }
+
+      bool IsNewStream() => expectedVersion == 0;
+
+      void CreateNewStream()
       {
         using (var stream = this._store.CreateStream(aggregateId))
         {
@@ -61,7 +104,8 @@ namespace CqrsSample.Inventory.CommandStack.Infrastructure
           stream.CommitChanges(Guid.NewGuid());
         }
       }
-      else
+
+      void AppendEventsToExistingStream()
       {
         using (var stream = this._store.OpenStream(aggregateId, minRevision: 0, maxRevision: expectedVersion))
         {
