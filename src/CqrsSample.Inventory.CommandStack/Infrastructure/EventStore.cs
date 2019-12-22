@@ -32,9 +32,47 @@ namespace CqrsSample.Inventory.CommandStack.Infrastructure
       }
     }
 
-    public void SaveEvents(Guid aggregateId, IEnumerable<Event> events, int expectedVersion)
+    public void SaveEvents(
+      Guid aggregateId,
+      IEnumerable<Event> events,
+      int expectedVersion)
     {
-      throw new NotImplementedException();
+      if (events == null)
+        throw new ArgumentNullException(nameof(events));
+
+      if (expectedVersion < 0)
+      {
+        throw new ArgumentOutOfRangeException(
+          nameof(expectedVersion),
+          "The expected aggregate version must be a non negative integer."
+        );
+      }
+
+      bool isNewStream = expectedVersion == 0;
+      if (isNewStream)
+      {
+        using (var stream = this._store.CreateStream(aggregateId))
+        {
+          foreach (var @event in events)
+          {
+            stream.Add(new EventMessage { Body = @event });
+          }
+
+          stream.CommitChanges(Guid.NewGuid());
+        }
+      }
+      else
+      {
+        using (var stream = this._store.OpenStream(aggregateId, minRevision: 0, maxRevision: expectedVersion))
+        {
+          foreach (var @event in events)
+          {
+            stream.Add(new EventMessage { Body = @event });
+          }
+
+          stream.CommitChanges(Guid.NewGuid());
+        }
+      }
     }
   }
 }
