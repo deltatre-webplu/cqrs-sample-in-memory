@@ -4,7 +4,9 @@ using CqrsSample.Inventory.CommandStack.Model;
 namespace CqrsSample.Inventory.CommandStack.Infrastructure
 {
   /// <summary>
-  /// An implementation of the interface <see cref="IRepository"/> which uses the <see cref="IEventStore"/> abstraction in order to access the event store.
+  /// An implementation of the interface <see cref="IRepository"/>
+  /// which uses the <see cref="IEventStore"/> abstraction
+  /// in order to access the event store.
   /// </summary>
   public sealed class Repository : IRepository
   {
@@ -13,8 +15,12 @@ namespace CqrsSample.Inventory.CommandStack.Infrastructure
     /// <summary>
     /// Initializes a new instance of the class <see cref="Repository"/>.
     /// </summary>
-    /// <param name="eventStore">The <see cref="IEventStore"/> instance to be used to save and read events.</param>
-    /// <exception cref="ArgumentNullException">Throws <see cref="ArgumentNullException"/> when parameter <paramref name="eventStore"/> is null.</exception>
+    /// <param name="eventStore">
+    /// The <see cref="IEventStore"/> instance to be used to save and read events.
+    /// </param>
+    /// <exception cref="ArgumentNullException">
+    /// Throws <see cref="ArgumentNullException"/> when parameter <paramref name="eventStore"/> is null.
+    /// </exception>
     public Repository(IEventStore eventStore)
     {
       this.eventStore = eventStore ?? throw new ArgumentNullException(nameof(eventStore));
@@ -23,9 +29,15 @@ namespace CqrsSample.Inventory.CommandStack.Infrastructure
     /// <summary>
     /// Gets the current state of an aggregate by rehydrating it from its event stream.
     /// </summary>
-    /// <typeparam name="TAggregate">The type of the aggregate being rehydrated from the event stream.</typeparam>
-    /// <param name="aggregateId">The unique identifier of the aggregate being rehydrated from the event stream.</param>
-    /// <returns>The aggregate at its current state.</returns>
+    /// <typeparam name="TAggregate">
+    /// The type of the aggregate being rehydrated from the event stream.
+    /// </typeparam>
+    /// <param name="aggregateId">
+    /// The unique identifier of the aggregate being rehydrated from the event stream.
+    /// </param>
+    /// <returns>
+    /// The aggregate at its current state.
+    /// </returns>
     public TAggregate GetById<TAggregate>(Guid aggregateId)
       where TAggregate : AggregateRoot
     {
@@ -40,14 +52,23 @@ namespace CqrsSample.Inventory.CommandStack.Infrastructure
     /// <summary>
     /// Saves the uncommitted events of an aggregate to the event store. 
     /// </summary>
-    /// <param name="aggregate">The aggregate for which you want to save the uncommitted events to the event store.</param>
+    /// <param name="aggregate">
+    /// The aggregate for which you want to save the uncommitted events to the event store.
+    /// </param>
     /// <param name="expectedVersion">
     /// The aggregate version being expected by the method caller.
-    /// This is used in order to perform the optimistic concurrency check before appending the new events to the aggregate's event stream.
-    /// This parameter is expected to be a non negative integer. Pass the value zero (0) when you are saving an aggregate for the very first time.
+    /// This is used in order to perform the optimistic concurrency check before appending 
+    /// the new events to the aggregate's event stream.
+    /// This parameter is expected to be a non negative integer. 
+    /// Pass the value zero (0) when you are saving an aggregate for the very first time.
     /// </param>
-    /// <exception cref="ArgumentNullException">Throws <see cref="ArgumentNullException"/> when parameter <paramref name="aggregate"/> is null.</exception>
-    /// <exception cref="ArgumentOutOfRangeException">Throws <see cref="ArgumentOutOfRangeException"/> when parameter <paramref name="expectedVersion"/> is less than zero.</exception>
+    /// <exception cref="ArgumentNullException">
+    /// Throws <see cref="ArgumentNullException"/> when parameter <paramref name="aggregate"/> is null.
+    /// </exception>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Throws <see cref="ArgumentOutOfRangeException"/> when parameter <paramref name="expectedVersion"/>
+    /// is less than zero.
+    /// </exception>
     public void Save(AggregateRoot aggregate, int expectedVersion)
     {
       if (aggregate == null)
@@ -62,7 +83,10 @@ namespace CqrsSample.Inventory.CommandStack.Infrastructure
 
       var uncommittedEvents = ((IAggregateRoot)aggregate).GetUncommittedChanges();
 
-      this.eventStore.SaveEvents(aggregate.Id, uncommittedEvents, expectedVersion);
+      this.eventStore.SaveEvents(
+        aggregate.Id,
+        uncommittedEvents,
+        expectedVersion);
 
       ((IAggregateRoot)aggregate).MarkChangesAsCommitted();
     }
