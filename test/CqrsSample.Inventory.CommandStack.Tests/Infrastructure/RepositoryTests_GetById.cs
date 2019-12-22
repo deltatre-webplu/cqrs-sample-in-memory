@@ -3,6 +3,7 @@ using CqrsSample.Inventory.CommandStack.Infrastructure;
 using Moq;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CqrsSample.Inventory.CommandStack.Tests.Infrastructure
@@ -16,12 +17,12 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Infrastructure
       // ARRANGE
       var aggregateId = Guid.NewGuid();
 
-      var events = new Event[]
+      var events = new List<Event>
       {
         new PersonCreated(aggregateId, "Bob", 26, 1),
         new NameChanged(aggregateId, 2, "Bob", "Alice"),
         new AgeChanged(aggregateId, 3, 26, 22)
-      };
+      }.AsReadOnly();
 
       var eventStoreMock = new Mock<IEventStore>(MockBehavior.Strict);
       eventStoreMock
@@ -54,7 +55,7 @@ namespace CqrsSample.Inventory.CommandStack.Tests.Infrastructure
       var eventStoreMock = new Mock<IEventStore>(MockBehavior.Strict);
       eventStoreMock
         .Setup(m => m.GetEventsForAggregate(aggregateId))
-        .Returns(Enumerable.Empty<Event>());
+        .Returns(Enumerable.Empty<Event>().ToList().AsReadOnly());
 
       var target = new Repository(eventStoreMock.Object);
 
