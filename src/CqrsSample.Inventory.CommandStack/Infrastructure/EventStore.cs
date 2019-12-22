@@ -14,6 +14,16 @@ namespace CqrsSample.Inventory.CommandStack.Infrastructure
   {
     private readonly IStoreEvents _store;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="EventStore"/> class.
+    /// </summary>
+    /// <param name="store">
+    /// The proxy object used to access the underlying physical event store.
+    /// Cannot be null.
+    /// </param>
+    /// <exception cref="ArgumentNullException">
+    /// Throws <see cref="ArgumentNullException"/> when <paramref name="store"/> is null.
+    /// </exception>
     public EventStore(IStoreEvents store)
     {
       _store = store ?? throw new ArgumentNullException(nameof(store));
